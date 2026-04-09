@@ -67,14 +67,14 @@
                     {{ $book->sinopsis ?? 'Sinopsis belum tersedia.' }}
                 </p>
             </div>
-            {{-- RATING & REVIEWS - TAMBAH INI --}}
+            {{-- RATING & REVIEWS --}}
     <div class="mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 p-6 rounded-2xl">
         <div class="flex items-center gap-3 mb-4">
             {{-- RATING AVERAGE --}}
             <div class="flex items-center gap-1">
                 <div class="flex text-yellow-400 text-xl">
                     @php
-                        $avgRating = $book->reviews()->avg('rating') ?? 0;
+                        $avgRating = $reviews->avg('rating') ?? 0;
                         $fullStars = floor($avgRating);
                         $hasHalfStar = $avgRating - $fullStars >= 0.5;
                     @endphp
@@ -89,14 +89,14 @@
                     @endfor
                 </div>
                 <span class="font-bold text-2xl text-gray-800">{{ number_format($avgRating, 1) }}</span>
-                <span class="text-sm text-gray-500">({{ $book->reviews->count() }} ulasan)</span>
+                <span class="text-sm text-gray-500">({{ $reviews->count() }} ulasan)</span>
             </div>
         </div>
 
         {{-- LIST REVIEWS TERBARU --}}
-        @if($book->reviews->count() > 0)
-            <div class="space-y-4 max-h-48 overflow-y-auto">
-                @foreach($book->reviews->take(3) as $review)
+        @if($reviews->count() > 0)
+            <div class="space-y-4 max-h-64 overflow-y-auto">
+                @foreach($reviews as $review)
                     <div class="flex gap-3 p-3 bg-white rounded-xl border border-gray-100">
                         <div class="flex items-center gap-1 text-yellow-400 text-lg">
                             @for($i = 1; $i <= $review->rating; $i++) ⭐ @endfor

@@ -284,6 +284,10 @@ body {
             <h2 class="text-2xl font-bold text-green-600 flex items-center gap-2">
                 <i class="fa fa-book"></i> Laporan Peminjaman
             </h2>
+            <a href="{{ route('admin.laporan.printAll') }}" target="_blank"
+               class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-blue-700 transition">
+                <i class="fa fa-print"></i> Cetak Semua
+            </a>
         </div>
 
         <!-- TABLE -->

@@ -298,12 +298,25 @@ body {
                         placeholder="Jumlah stok">
                 </div>
 
-                <textarea name="sinopsis" placeholder="Sinopsis buku"
-                    class="w-full border rounded-lg p-2"></textarea>
+                <!-- Sinopsis -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-600 mb-3">
+                        Sinopsis Buku
+                    </label>
+                    <textarea name="sinopsis" placeholder="Sinopsis buku"
+                        class="w-full border-2 border-green-100 rounded-2xl px-5 py-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition h-24"
+                        rows="4"></textarea>
+                </div>
 
-                <input type="number" name="jumlah_halaman"
-                    placeholder="Jumlah Halaman"
-                    class="w-full border rounded-lg p-2">
+                <!-- Jumlah Halaman -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-3">
+                        Jumlah Halaman
+                    </label>
+                    <input type="number" name="jumlah_halaman"
+                        placeholder="Jumlah Halaman"
+                        class="w-full border-2 border-green-100 rounded-2xl px-5 py-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition">
+                </div>
 
                 <!-- Kategori -->
                 <div class="md:col-span-2">

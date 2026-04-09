@@ -48,8 +48,8 @@ class ApprovalController extends Controller
                 'cover' => $req->cover,
             ]);
 
-            if ($req->category_id) {
-                $book->categories()->sync([$req->category_id]);
+            if ($req->categories) {
+                $book->categories()->sync($req->categories->pluck('id'));
             }
         } elseif ($req->action === 'update') {
             $book = Book::findOrFail($req->book_id);
@@ -64,8 +64,8 @@ class ApprovalController extends Controller
                 'cover' => $req->cover,
             ]);
 
-            if ($req->category_id) {
-                $book->categories()->sync([$req->category_id]);
+            if ($req->categories) {
+                $book->categories()->sync($req->categories->pluck('id'));
             }
         } elseif ($req->action === 'delete') {
             $book = Book::find($req->book_id);

@@ -5,6 +5,12 @@
     <h1 class="text-3xl font-bold mb-6">Laporan Peminjaman</h1>
 
     <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-4">
+            <p class="text-sm text-gray-600">Laporan Peminjaman selesai</p>
+            <a href="{{ route('petugas.laporan.printAll') }}" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-blue-700 transition">
+                <i class="fa fa-print"></i> Cetak Semua
+            </a>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full border-collapse">
                 <thead>

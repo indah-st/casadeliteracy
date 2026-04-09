@@ -24,13 +24,15 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'address' => 'nullable|string|max:255'
         ]);
 
         $user = Auth::user();
 
         $user->update([
             'name' => $request->name,
+            'address' => $request->address,
             'email' => $request->email,
         ]);
 

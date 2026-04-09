@@ -25,6 +25,7 @@ use App\Http\Controllers\Petugas\ApprovalController as PetugasApprovalController
 use App\Http\Controllers\Petugas\PeminjamanController;
 use App\Http\Controllers\Petugas\LaporanController;
 use App\Http\Controllers\Petugas\UserController as PetugasUserController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 use App\Models\Category;
 
@@ -66,9 +67,7 @@ Route::middleware(['auth','role:user'])->group(function () {
 
   $categories = Category::all(); // ambil semua kategori
 
-$books = \App\Models\Book::with(['reviews' => function($query) {
-    $query->where('user_id', auth()->id());
-}])->latest()->take(8)->get();
+  $books = \App\Models\Book::with(['categories', 'reviews.user'])->latest()->take(8)->get();
     return view('user.dashboard', compact('books','categories'));
 
 })->middleware('auth');
@@ -87,7 +86,7 @@ $books = \App\Models\Book::with(['reviews' => function($query) {
 
    Route::get('/book/{book}/review', [\App\Http\Controllers\ReviewController::class, 'create'])->name('book.review');
     Route::post('/book/{book}/review', [\App\Http\Controllers\ReviewController::class, 'store'])->name('book.review.store');
-
+    
     Route::get('/koleksi-saya', [CollectionController::class, 'index'])->name('user.collections.index');
 });
 
@@ -99,7 +98,9 @@ $books = \App\Models\Book::with(['reviews' => function($query) {
 
 Route::middleware('auth')->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'index'])->name('user.profile');
-    Route::post('/user/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
+    Route::put('/user/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
+    // if form uses POST directly instead of spoofing PUT:
+    Route::post('/user/profile/update', [ProfileController::class, 'update']);
 });
 
 /*
@@ -173,12 +174,16 @@ Route::prefix('petugas')->middleware('web')->group(function () {
         Route::post('/approve-return/{id}', [PetugasApprovalController::class, 'approveReturn'])->name('approveReturn');
         Route::post('/reject-return/{id}', [PetugasApprovalController::class, 'rejectReturn'])->name('rejectReturn');
 
+        // REVIEW DELETE
+        Route::delete('/review/{review}', [ReviewController::class, 'destroy'])->name('petugas.review.destroy');
+
         // PEMINJAMAN & USERS & LAPORAN
         Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('petugas.peminjaman.index');
         Route::get('/users', [PetugasUserController::class, 'index'])->name('petugas.users.index');
         Route::get('/approvals', [PetugasApprovalController::class, 'index'])->name('petugas.approvals.index');
         Route::get('/laporan', [LaporanController::class, 'index'])->name('petugas.laporan.index');
         Route::get('/laporan/print/{id}', [LaporanController::class, 'print'])->name('petugas.laporan.print');
+        Route::get('/laporan/print-all', [LaporanController::class, 'printAll'])->name('petugas.laporan.printAll');
     });
 });
 
@@ -190,12 +195,8 @@ Route::prefix('petugas')->middleware('web')->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-Route::get('/admin', [AdminDashboardController::class, 'index'])
-    ->name('admin.dashboard');
-
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    });
+    Route::get('/', [AdminDashboardController::class, 'index'])
+        ->name('admin.dashboard');
 
     Route::resource('books', AdminBookController::class);
     Route::resource('categories', AdminCategoryController::class);
@@ -237,11 +238,14 @@ Route::post('/admin/book-request/{id}/reject', [ApprovalController::class, 'reje
     ->name('admin.book.reject');
 
     Route::get('/laporan', [AdminBorrowingController::class, 'laporan'])
-    ->name('laporan.index');
+        ->name('laporan.index');
 
-Route::get('/laporan/{id}/print', [AdminBorrowingController::class, 'print'])
-    ->name('laporan.print');
+    Route::get('/laporan/{id}/print', [AdminBorrowingController::class, 'print'])
+        ->name('laporan.print');
+    Route::get('/laporan/print-all', [AdminBorrowingController::class, 'printAll'])
+        ->name('laporan.printAll');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-});
-
+Route::delete('/review/{id}', [AdminReviewController::class, 'destroy'])
+    ->name('review.destroy');
+  });

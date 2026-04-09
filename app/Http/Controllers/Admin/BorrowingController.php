@@ -98,4 +98,14 @@ class BorrowingController extends Controller
         $borrowing = Borrowing::with(['user', 'book'])->findOrFail($id);
         return view('admin.laporan.print', compact('borrowing'));
     }
+
+    public function printAll()
+    {
+        $borrowings = Borrowing::with(['user', 'book'])
+            ->where('status', 'selesai')
+            ->latest()
+            ->get();
+
+        return view('admin.laporan.print_all', compact('borrowings'));
+    }
 }

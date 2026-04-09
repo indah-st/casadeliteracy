@@ -92,8 +92,9 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
-        $book->load(['reviews.user', 'categories']);
-        return view('user.book-detail', compact('book'));
+        $book->load('categories');
+        $reviews = $book->reviews()->with('user')->latest()->get();
+        return view('user.book-detail', compact('book', 'reviews'));
     }
 
     public function edit(Book $book)

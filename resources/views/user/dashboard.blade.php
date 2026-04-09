@@ -16,11 +16,11 @@
 
 @else
 
-<div class="grid grid-cols-8 gap-y-10 justify-items-center">
+<div class="grid grid-cols-8 gap-6">
 
 @foreach($books as $book)
 
-<div class="group w-36">
+<div class="group w-full flex flex-col h-full">
 
 {{-- BUKU --}}
 <div class="relative">
@@ -53,7 +53,7 @@ No Cover
 
 
 {{-- INFO --}}
-<div class="mt-3">
+<div class="mt-3 flex-1 flex flex-col">
 
 <h3 class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">
 {{ $book->judul }}
@@ -63,7 +63,7 @@ No Cover
 {{ $book->penulis ?? 'Penulis tidak diketahui' }}
 </p>
 
-<div class="flex items-center justify-between mt-2">
+<div class="flex items-center justify-between mt-2 mb-3">
 
 <span class="text-xs text-gray-500">
 Stok {{ $book->stok }}
@@ -73,16 +73,16 @@ Stok {{ $book->stok }}
     $rating = $book->reviews->avg('rating') ?? 0;
 @endphp
 
-<div class="flex items-center">
+<div class="flex items-center gap-1">
     @for ($i = 1; $i <= 5; $i++)
         @if ($i <= round($rating))
-            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400 text-xs"></i>
         @else
-            <i class="fa fa-star text-gray-300"></i>
+            <i class="fa fa-star text-gray-300 text-xs"></i>
         @endif
     @endfor
 
-    <span class="ml-2 text-sm text-gray-600">
+    <span class="text-xs text-gray-600 ml-1">
         ({{ number_format($rating, 1) }})
     </span>
 </div>
@@ -91,7 +91,7 @@ Stok {{ $book->stok }}
 
 
 <a href="{{ route('books.show',$book->id) }}"
-class="block mt-3 text-center text-sm bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+class="block mt-auto text-center text-sm bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
 Detail
 </a>
 

@@ -248,7 +248,7 @@ body{
 
         <div class="kontak-item">
             <h4>Alamat</h4>
-            <p>Jl. Malioboro No. 101, Sosromenduran, Gedong Tengen, Kota Yogyakarta, Daerah Istimewa Yogyakarta 55271.</p>
+            <p>Jalan Cikini Raya No. 73, Komplek Taman Ismail Marzuki (TIM), Cikini, Menteng, Jakarta Pusat 10330</p>
         </div>
     </div>
 </section>

@@ -32,15 +32,15 @@
     @endif
 
     <!-- Card Form -->
-    <div class="bg-white rounded-3xl shadow-xl border border-green-100 p-12">
+    <div class="bg-white rounded-3xl shadow-xl border border-green-100 p-8 max-h-[80vh] overflow-y-auto">
 
         <form action="{{ route('petugas.books.store') }}" 
               method="POST" 
               enctype="multipart/form-data"
-              class="space-y-10">
+              class="space-y-8">
             @csrf
 
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid md:grid-cols-2 gap-6">
 
                 <!-- Judul -->
                 <div class="md:col-span-2">
@@ -92,12 +92,25 @@
                         placeholder="Jumlah stok">
                 </div>
 
-                <textarea name="sinopsis" placeholder="Sinopsis buku"
-                    class="w-full border rounded-lg p-2"></textarea>
+                <!-- Sinopsis -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-600 mb-3">
+                        Sinopsis Buku
+                    </label>
+                    <textarea name="sinopsis" placeholder="Sinopsis buku"
+                        class="w-full border-2 border-green-100 rounded-2xl px-5 py-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition h-24"
+                        rows="4"></textarea>
+                </div>
 
-                <input type="number" name="jumlah_halaman"
-                    placeholder="Jumlah Halaman"
-                    class="w-full border rounded-lg p-2">
+                <!-- Jumlah Halaman -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-3">
+                        Jumlah Halaman
+                    </label>
+                    <input type="number" name="jumlah_halaman"
+                        placeholder="Jumlah Halaman"
+                        class="w-full border-2 border-green-100 rounded-2xl px-5 py-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition">
+                </div>
 
                 <!-- Kategori -->
                 <div class="md:col-span-2">
@@ -105,18 +118,17 @@
                         Kategori Buku
                     </label>
 
-                    <select id="category_id"
-                            name="category_id"
-                            class="w-full border rounded-lg p-2"
-                            required>
-                        <option value="">Pilih kategori</option>
+                    <select id="categories"
+                            name="categories[]"
+                            multiple
+                            class="w-full border-2 border-green-100 rounded-2xl px-5 py-4 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
 
                     <p class="text-xs text-gray-400 mt-3">
-                        Pilih satu kategori untuk disetujui admin.
+                        Bisa pilih lebih dari satu kategori
                     </p>
                 </div>
 
@@ -137,7 +149,7 @@
             </div>
 
             <!-- Button -->
-            <div class="flex justify-end gap-4 pt-8">
+            <div class="flex justify-end gap-4 pt-6 border-t border-gray-100">
                 <a href="{{ route('petugas.books.index') }}"
                    class="px-7 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition font-medium">
                     Batal
@@ -155,13 +167,13 @@
 
 </div>
 <script>
-
-  new TomSelect("#categories", {
+document.addEventListener('DOMContentLoaded', function() {
+    new TomSelect("#categories", {
         plugins: ['remove_button'],
         placeholder: "Pilih kategori",
         persist: false,
         create: false,
     });
-
+});
 </script>
 @endsection

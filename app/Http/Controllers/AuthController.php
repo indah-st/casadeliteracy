@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -19,16 +20,37 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|min:6'
+            'name'           => 'required',
+            'email'          => 'required|email|unique:users',
+            'password'       => 'required|min:6',
+            'city'           => 'required|string|in:Jakarta Pusat,Jakarta Selatan,Jakarta Barat,Jakarta Utara,Jakarta Timur',
+            'address_detail' => 'required|string|max:255'
+        ], [
+            'city.in' => 'Maaf, registrasi hanya diperbolehkan untuk pengguna yang berlokasi di wilayah Jakarta (Jakarta Pusat, Jakarta Utara, Jakarta Timur, Jakarta Selatan, Jakarta Barat). Lokasi perpustakaan kami berada di Jakarta Pusat.',
         ]);
+
+        $addressLower = strtolower($request->address_detail);
+        $allowedKeywords = [
+            'jakarta pusat',
+            'jakarta selatan',
+            'jakarta barat',
+            'jakarta utara',
+            'jakarta timur',
+            'jakarta',
+        ];
+
+        if (! Str::contains($addressLower, $allowedKeywords)) {
+            return back()
+                ->withErrors(['address_detail' => 'Maaf, lokasi Anda tidak sesuai.'])
+                ->withInput();
+        }
 
         User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'user' // FIX: default selalu user
+            'address'  => trim($request->city . ', ' . $request->address_detail),
+            'role'     => 'user'
         ]);
 
         // langsung arahkan ke login user

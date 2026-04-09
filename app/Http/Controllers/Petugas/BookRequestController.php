@@ -19,14 +19,14 @@ class BookRequestController extends Controller
         return view('petugas.book_requests.create', compact('bookRequests', 'categories'));
     }
 
- public function index()
+    public function index()
     {
         // ambil semua book request milik user yang login
-        $bookRequests = BookRequest::where('user_id', Auth::id())->get();
+        $bookRequests = BookRequest::with('categories')->where('user_id', Auth::id())->get();
 
         return view('petugas.book_requests.index', compact('bookRequests'));
     }
-    
+
     // Simpan request baru
     public function store(Request $request)
     {

@@ -25,4 +25,14 @@ class LaporanController extends Controller
         $borrowing = Borrowing::with(['user', 'book'])->findOrFail($id);
         return view('petugas.laporan.print', compact('borrowing'));
     }
+
+    public function printAll()
+    {
+        $borrowings = Borrowing::with(['user', 'book'])
+            ->where('status', 'selesai')
+            ->latest()
+            ->get();
+
+        return view('petugas.laporan.print_all', compact('borrowings'));
+    }
 }

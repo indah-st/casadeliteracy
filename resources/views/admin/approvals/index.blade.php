@@ -286,7 +286,8 @@ color:white;
         @foreach($borrowings as $b)
         <div class="card mb-4">
             <h2 class="font-semibold">{{ $b->book->judul ?? '-' }}</h2>
-            <p>{{ $b->user->name ?? '-' }}</p>
+            <p>Nama: {{ $b->user->name ?? '-' }}</p>
+            <p>Alamat: {{ $b->user->address ?? '-' }}</p>
             <p>{{ $b->tanggal_pinjam }} → {{ $b->tanggal_kembali }}</p>
 
             <div class="mb-2">
@@ -327,25 +328,52 @@ color:white;
         <h1 class="text-2xl font-bold mb-6">Request Buku</h1>
 
         @foreach($bookRequests as $req)
-        <div class="card mb-4">
-            <h2 class="font-semibold">{{ $req->judul }}</h2>
-            <p>{{ $req->penulis }}</p>
-
-            <span class="status {{ $req->status }}">
-                {{ $req->status }}
-            </span>
-
-            @if($req->status == 'pending')
-            <div class="mt-3 flex gap-2">
-                <form action="/admin/approve-book/{{ $req->id }}" method="POST">@csrf
-                    <button class="btn approve">Approve</button>
-                </form>
-
-                <form action="/admin/reject-book/{{ $req->id }}" method="POST">@csrf
-                    <button class="btn reject">Reject</button>
-                </form>
+        <div class="card mb-4 flex gap-4">
+            <!-- COVER BUKU -->
+            <div class="w-24 h-32 flex-shrink-0">
+                @if($req->cover)
+                    <img src="{{ asset('storage/' . $req->cover) }}" alt="{{ $req->judul }}" class="w-full h-full object-cover rounded-md shadow-md">
+                @else
+                    <div class="w-full h-full bg-gray-200 rounded-md flex items-center justify-center text-gray-400 text-xs">
+                        No Cover
+                    </div>
+                @endif
             </div>
-            @endif
+
+            <!-- INFO BUKU -->
+            <div class="flex-1">
+                <h2 class="font-semibold text-lg">{{ $req->judul }}</h2>
+                <p class="text-sm text-gray-600">{{ $req->penulis }}</p>
+                
+                <!-- KATEGORI BADGES -->
+                <div class="mt-2 flex flex-wrap gap-2">
+                    @if($req->categories && $req->categories->count() > 0)
+                        @foreach($req->categories as $category)
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                                {{ $category->name }}
+                            </span>
+                        @endforeach
+                    @else
+                        <span class="text-sm text-gray-500 italic">Tidak ada kategori</span>
+                    @endif
+                </div>
+
+                <span class="status {{ $req->status }} inline-block mt-3">
+                    {{ $req->status }}
+                </span>
+
+                @if($req->status == 'pending')
+                <div class="mt-3 flex gap-2">
+                    <form action="/admin/approve-book/{{ $req->id }}" method="POST">@csrf
+                        <button class="btn approve">Approve</button>
+                    </form>
+
+                    <form action="/admin/reject-book/{{ $req->id }}" method="POST">@csrf
+                        <button class="btn reject">Reject</button>
+                    </form>
+                </div>
+                @endif
+            </div>
         </div>
         @endforeach
     </div>

@@ -211,6 +211,7 @@ body {
                     <th class="p-4 text-left">No</th>
                     <th class="p-4 text-left">Nama</th>
                     <th class="p-4 text-left">Email</th>
+                    <th class="p-4 text-left">Alamat</th>
                     <th class="p-4 text-left">Tanggal Dibuat</th>
                 </tr>
             </thead>
@@ -220,6 +221,7 @@ body {
                     <td class="p-4">{{ $loop->iteration }}</td>
                     <td class="p-4 font-medium">{{ $user->name }}</td>
                     <td class="p-4">{{ $user->email }}</td>
+                    <td class="p-4">{{ $user->address ?? '-' }}</td>
                     <td class="p-4">
                         {{ $user->created_at->format('d M Y') }}
                     </td>

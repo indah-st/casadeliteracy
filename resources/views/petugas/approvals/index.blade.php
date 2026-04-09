@@ -12,6 +12,7 @@
                     <th class="px-4 py-2">No</th>
                     <th class="px-4 py-2">Buku</th>
                     <th class="px-4 py-2">Pemohon</th>
+                    <th class="px-4 py-2">Alamat</th>
                     <th class="px-4 py-2">Tanggal Pinjam</th>
                     <th class="px-4 py-2">Tanggal Kembali</th>
                     <th class="px-4 py-2">Status</th>
@@ -24,6 +25,7 @@
                     <td class="px-4 py-2">{{ $loop->iteration }}</td>
                     <td class="px-4 py-2">{{ $b->book->judul ?? '-' }}</td>
                     <td class="px-4 py-2">{{ $b->user->name ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $b->user->address ?? '-' }}</td>
                     <td class="px-4 py-2">{{ $b->tanggal_pinjam }}</td>
                     <td class="px-4 py-2">{{ $b->tanggal_kembali }}</td>
                     <td class="px-4 py-2 capitalize">{{ $b->status }}</td>
@@ -53,7 +55,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center p-4">Tidak ada pengajuan peminjaman atau pengembalian saat ini.</td>
+                    <td colspan="8" class="text-center p-4">Tidak ada pengajuan peminjaman atau pengembalian saat ini.</td>
                 </tr>
                 @endforelse
             </tbody>

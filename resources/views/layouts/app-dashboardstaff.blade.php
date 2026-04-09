@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 
 <style>
 * {
@@ -30,6 +31,10 @@ body {
     background: #03AC0E;
     color: white;
     padding: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .sidebar .logo {
@@ -82,6 +87,7 @@ body {
     display: flex;
     flex-direction: column;
     color: #000; 
+    overflow: hidden;
 }
 
 /* TOPBAR */
@@ -95,12 +101,11 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* CONTENT */
-.content {
+.page-content {
     flex: 1;
+    overflow-y: auto;
     padding: 40px 30px;
     background: #f4fdf7;
-    overflow-y: auto;
 }
 
 /* CARDS */
@@ -206,9 +211,9 @@ body {
         </li>
 
         <li>
-            <form action="{{ route('petugas.logout') }}" method="POST">
+            <form action="{{ route('petugas.logout') }}" method="POST" style="display: 100%;">
                 @csrf
-                <button type="submit">
+                <button type="submit" style="width: 100%; display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; padding: 14px 18px; border: none; background: none; cursor: pointer; border-radius: 8px; transition: 0.2s; font-family: inherit; font-size: inherit;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='none'">
                     <i class="fa fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </button>
@@ -221,17 +226,20 @@ body {
 <div class="main">
     <div class="topbar">Casa De Literacy</div>
 
-{{-- CONTENT --}}
-    <div class="w-full px-6 py-6">
+    {{-- CONTENT --}}
+    <div class="page-content">
         @yield('content')
-        
-    <script>
-    
-function toggleDropdown(id){
-    const drop = document.getElementById(id);
-    drop.style.display = drop.style.display === "block" ? "none" : "block";
-}
+    </div>
+</div>
+
+<script>
+    function toggleDropdown(id){
+        const drop = document.getElementById(id);
+        drop.style.display = drop.style.display === "block" ? "none" : "block";
+    }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
 </body>
 </html>

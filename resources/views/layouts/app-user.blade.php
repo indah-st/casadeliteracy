@@ -28,9 +28,12 @@
 
         {{-- tengah search --}}
         <div class="w-2/3">
-            <input type="text"
-                   placeholder="Cari buku..."
-                   class="w-full border rounded-full px-6 py-4 focus:outline-none focus:ring-2 focus:ring-green-500">
+            <form action="{{ route('user.books') }}" method="GET" class="w-full">
+                <input type="text"
+                       name="search"
+                       placeholder="Cari buku..."
+                       class="w-full border rounded-full px-6 py-4 focus:outline-none focus:ring-2 focus:ring-green-500">
+            </form>
         </div>
 
         {{-- kanan --}}

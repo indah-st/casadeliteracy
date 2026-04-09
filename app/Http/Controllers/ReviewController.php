@@ -30,4 +30,10 @@ class ReviewController extends Controller
 
         return redirect()->route('books.show', $book)->with('success', 'Review berhasil ditambahkan!');
     }
+
+    public function destroy(Review $review)
+    {
+        $review->delete();
+        return back()->with('success', 'Review berhasil dihapus!');
+    }
 }

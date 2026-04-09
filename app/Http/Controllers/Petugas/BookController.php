@@ -52,15 +52,20 @@ class BookController extends Controller
             'penerbit' => 'required|string|max:255',
             'tahun' => 'required|numeric',
             'stok' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
             'sinopsis' => 'nullable|string',
             'jumlah_halaman' => 'nullable|numeric',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,jfif|max:2048'
         ]);
 
-        BookRequest::create([
+        $coverPath = null;
+        if ($request->hasFile('cover')) {
+            $coverPath = $request->file('cover')->store('covers', 'public');
+        }
+
+        $bookRequest = BookRequest::create([
             'user_id' => $this->currentActorId(),
-            'category_id' => $request->category_id,
             'judul' => $request->judul,
             'penulis' => $request->penulis,
             'penerbit' => $request->penerbit,
@@ -68,10 +73,12 @@ class BookController extends Controller
             'stok' => $request->stok,
             'sinopsis' => $request->sinopsis,
             'jumlah_halaman' => $request->jumlah_halaman,
-            'cover' => $request->cover,
+            'cover' => $coverPath,
             'action' => 'create',
             'status' => 'pending',
         ]);
+
+        $bookRequest->categories()->sync($request->categories);
 
         return redirect()->route('petugas.book_requests.index')
             ->with('success', 'Request penambahan buku berhasil dikirim, menunggu approval admin (pending)');
@@ -91,16 +98,16 @@ class BookController extends Controller
             'penerbit' => 'required|string|max:255',
             'tahun' => 'required|numeric',
             'stok' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
             'sinopsis' => 'nullable|string',
             'jumlah_halaman' => 'nullable|numeric',
             'cover' => 'nullable|string',
         ]);
 
-        BookRequest::create([
+        $bookRequest = BookRequest::create([
             'user_id' => $this->currentActorId(),
             'book_id' => $book->id,
-            'category_id' => $request->category_id,
             'judul' => $request->judul,
             'penulis' => $request->penulis,
             'penerbit' => $request->penerbit,
@@ -112,6 +119,8 @@ class BookController extends Controller
             'action' => 'update',
             'status' => 'pending',
         ]);
+
+        $bookRequest->categories()->sync($request->categories);
 
         return redirect()->route('petugas.book_requests.index')
             ->with('success', 'Request update buku berhasil dikirim, menunggu approval admin (pending)');
